@@ -31,6 +31,8 @@ brew "zsh-syntax-highlighting"
 cask "font-meslo-lg-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Move and resize windows using keyboard shortcuts or snap areas
+cask "rectangle"
 mas "WhatsApp", id: 310633997
 npm "@anthropic-ai/claude-code"
 npm "pnpm"
