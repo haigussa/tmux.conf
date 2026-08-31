@@ -23,8 +23,8 @@ git clone git@github.com:haigussa/tmux.conf.git ~/dotfiles
 mkdir -p ~/.config/tmux
 ln -s ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
-# nvim (when added)
-# ln -s ~/dotfiles/nvim ~/.config/nvim
+# nvim
+ln -s ~/dotfiles/nvim ~/.config/nvim
 
 # ghostty (when added)
 # ln -s ~/dotfiles/ghostty ~/.config/ghostty
