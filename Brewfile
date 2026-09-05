@@ -38,3 +38,5 @@ cask "rectangle"
 mas "WhatsApp", id: 310633997
 npm "@anthropic-ai/claude-code"
 npm "pnpm"
+# Symlink farm manager for dotfiles
+brew "stow"
