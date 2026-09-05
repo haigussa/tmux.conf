@@ -1,49 +1,57 @@
 # dotfiles
 
-Personal configuration files.
+Managed with [GNU Stow](https://www.gnu.org/software/stow/) and [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle).
 
-## Setup on a new machine
+Each top-level folder (except `.git`) is a stow package. The folder structure inside mirrors the path relative to `~/`.
 
-### 1. Generate SSH key and add to GitHub
+## New machine setup
+
 ```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
-cat ~/.ssh/id_ed25519.pub
+# 1. Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2. Install oh-my-zsh (not available via brew)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# 3. Set up SSH key for GitHub
+ssh-keygen -t ed25519
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+pbcopy < ~/.ssh/id_ed25519.pub
+# Add key at github.com/settings/keys
+
+# 4. Clone and install
+cd ~
+git clone git@github.com:haigussa/dotfiles.git
+brew bundle --file=~/dotfiles/Brewfile
+
+# 5. Stow all configs
+cd ~/dotfiles
+for d in */; do stow "$d"; done
 ```
 
-Add the public key at https://github.com/settings/keys
+## Day-to-day
 
-### 2. Clone this repo
+**Add a brew package:**
 ```bash
-git clone git@github.com:haigussa/tmux.conf.git ~/dotfiles
+brew install <package>
+brew bundle dump --file=~/dotfiles/Brewfile --force
 ```
 
-### 3. Create symlinks
+**Add a new config to dotfiles:**
 ```bash
-# tmux
-mkdir -p ~/.config/tmux
-ln -s ~/dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
-
-# nvim
-ln -s ~/dotfiles/nvim ~/.config/nvim
-
-# ghostty (when added)
-# ln -s ~/dotfiles/ghostty ~/.config/ghostty
+mkdir -p ~/dotfiles/<name>/<path-relative-to-home>
+mv ~/<path-to-config> ~/dotfiles/<name>/<path-relative-to-home>/
+cd ~/dotfiles && stow <name>
 ```
 
-## Adding a new config
-
-1. Create folder: `mkdir ~/dotfiles/appname`
-2. Copy config: `cp -r ~/.config/appname/* ~/dotfiles/appname/`
-3. Remove original: `rm -rf ~/.config/appname`
-4. Symlink: `ln -s ~/dotfiles/appname ~/.config/appname`
-5. Push:
+**Remove a stow package:**
 ```bash
-   cd ~/dotfiles
-   git add .
-   git commit -m "add appname config"
-   git push
+cd ~/dotfiles && stow -D <name>
 ```
 
-## Current configs
-
-- **tmux** — prefix is `Ctrl-a`, vim-style navigation and copy mode
+**Sync to another machine:**
+```bash
+cd ~/dotfiles && git pull && brew bundle --file=~/dotfiles/Brewfile
+for d in */; do stow "$d"; done
+```
