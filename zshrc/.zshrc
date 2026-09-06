@@ -124,3 +124,12 @@ export PATH="/Applications/MacPorts/Emacs.app/Contents/MacOS:$PATH"
 export PATH=${PATH}:"/usr/local/mysql-8.0.31-macos12-arm64/bin"
 
 eval "$(fzf --zsh)"
+
+# change the current working directory when exiting Yazi
+function y() {
+	local tmp cwd; tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
+	command rm -f -- "$tmp"
+}
