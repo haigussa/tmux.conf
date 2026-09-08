@@ -1,3 +1,5 @@
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Play, record, convert, and stream many audio and video codecs
